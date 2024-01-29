@@ -31,8 +31,9 @@ const DELETE_POST = 'DELETE_POST';
 const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 const DELETE_POST_ERROR = 'DELETE_POST_ERROR';
 
-// 아주 쉽게 thunk 함수를 만들 수 있게 되었습니다.
+// 비동기작업(postsAPI.getPosts)을 위한 thunk생성
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
+// axios를 사용하여 서버에서 특정 postId에 해당하는 데이터를 가져오고, 가져온 데이터를 스토어에 업데이트합니다.
 export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
 export const createPost = createPromiseThunk(CREATE_POST, postsAPI.createPost);
 export const updatePost = createPromiseThunkById(UPDATE_POST, postsAPI.updatePostById);
@@ -45,6 +46,15 @@ const initialState = {
   post: {}
 };
 
+
+// const initialState: {
+//   posts: {
+//       loading: boolean;
+//       data: null;
+//       error: null;
+//   };
+//   post: {};
+// }
 export default function posts(state = initialState, action) {
   switch (action.type) {
     case GET_POSTS:

@@ -4,10 +4,12 @@ import PostList from '../components/blog/PostList';
 import { getPosts } from '../modules/posts';
 
 function PostListContainer() {
+  //state.posts.posts 에서 리덕스스토어에서 data, loading, error 이 값들을 가져올 수 있음
   const { data, loading, error } = useSelector(state => state.posts.posts);
-  const dispatch = useDispatch();
+  
 
-  // 컴포넌트 마운트 후 포스트 목록 요청
+  // 디스패치
+  const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getPosts());
   }, [dispatch]);
@@ -15,9 +17,6 @@ function PostListContainer() {
   if (loading && !data) return <div>로딩중...</div>;
   if (error) return <div>에러 발생!</div>;
   if (!data) return null;
-
-  console.log("PostListContainer     " + data);
-  console.log("PostListContainer " + typeof data);
 
   return <PostList posts={data} />;
 }
