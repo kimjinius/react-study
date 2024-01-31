@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle } from "styled-components";
-import BlogHead from "../components/blog/BlogHead";
 import BlogTemplate from "../components/blog/BlogTemplates";
 import PostListContainer from "../containers/PostListContainer";
+import SagaTestContainer from "../containers/SagaTestContainer";
 import { BsPencilSquare } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
@@ -35,8 +35,9 @@ const BlogHome = () => {
     return (
       <div>
         <GlobalStyle />
-          
-        <BlogHead title="블로그 홈" />
+        {/* <SagaTestContainer></SagaTestContainer> */}
+        {/* <BlogHead title="블로그 홈" /> */}
+        <SagaTestContainer titleText="블로그 홈"/>
 
         <Link to={`/createpost`} style={{ textDecoration: "none", color : "black" }}>
           <CreatePostDiv>

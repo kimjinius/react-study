@@ -1,27 +1,28 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPost } from '../modules/posts';
-import BlogPostDiv from '../components/blogpost/BlogPostDiv';
+import { getUser } from '../modules/users';
+import UserProfile from '../components/blogpost/UserProfile';
 
-function PostContainer({ postId }) {
+
+function UserProfileContainerland({ userid }) {
   const { data, loading, error } = useSelector(
-    state => state.posts.post[postId]
+    state => state.users.user[userid]
   ) || {
     loading: false,
     data: null,
     error: null
   }; 
-
   const dispatch = useDispatch();
+
   useEffect(() => {
-    dispatch(getPost(postId));
-  }, [postId, dispatch]);
+    dispatch(getUser(userid));
+  }, [userid, dispatch]);
 
   if (loading) return <div>로딩중...</div>;
   if (error) return <div>에러 발생!</div>;
   if (!data) return null;
-  
-  return <BlogPostDiv post={data} />;
+
+  return <UserProfile user={data} />;
 }
 
-export default PostContainer;
+export default UserProfileContainerland;

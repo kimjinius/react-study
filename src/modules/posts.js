@@ -1,20 +1,18 @@
-import * as postsAPI from '../api/posts'; // api/posts 안의 함수 모두 불러오기
+import * as postsAPI from '../api/posts';
 import {
   createPromiseThunk,
   reducerUtils,
   handleAsyncActions,
   createPromiseThunkById,
-  handleAsyncActionsById
+  handleAsyncActionsById,
+  createPromiseThunkByPostId
 } from '../lib/asyncUtils';
 
-/* 액션 타입 */
 
-// 포스트 여러개 조회하기
-const GET_POSTS = 'GET_POSTS'; // 요청 시작
-const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS'; // 요청 성공
-const GET_POSTS_ERROR = 'GET_POSTS_ERROR'; // 요청 실패
+const GET_POSTS = 'GET_POSTS';
+const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS';
+const GET_POSTS_ERROR = 'GET_POSTS_ERROR';
 
-// 포스트 하나 조회하기
 const GET_POST = 'GET_POST';
 const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
 const GET_POST_ERROR = 'GET_POST_ERROR';
@@ -22,6 +20,10 @@ const GET_POST_ERROR = 'GET_POST_ERROR';
 const CREATE_POST = 'CREATE_POST';
 const CREATE_POST_SUCCESS = 'CREATE_POST_SUCCESS';
 const CREATE_POST_ERROR = 'CREATE_POST_ERROR';
+
+const CREATE_POST_COMMENT = 'CREATE_POST_COMMENT';
+const CREATE_POST_COMMENT_SUCCESS = 'CREATE_POST_COMMENT_SUCCESS';
+const CREATE_POST_COMMENT_ERROR = 'CREATE_POST_COMMENT_ERROR';
 
 const UPDATE_POST = 'UPDATE_POST';
 const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
@@ -31,11 +33,11 @@ const DELETE_POST = 'DELETE_POST';
 const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
 const DELETE_POST_ERROR = 'DELETE_POST_ERROR';
 
-// 비동기작업(postsAPI.getPosts)을 위한 thunk생성
+// axios를 사용하여 서버에서 특정 postId에 해당하는 데이터를 가져오고, 가져온 데이터를 스토어에 업데이트
 export const getPosts = createPromiseThunk(GET_POSTS, postsAPI.getPosts);
-// axios를 사용하여 서버에서 특정 postId에 해당하는 데이터를 가져오고, 가져온 데이터를 스토어에 업데이트합니다.
 export const getPost = createPromiseThunkById(GET_POST, postsAPI.getPostById);
 export const createPost = createPromiseThunk(CREATE_POST, postsAPI.createPost);
+export const createPostComment = createPromiseThunkByPostId(CREATE_POST_COMMENT, (id, postData) => postsAPI.createPostComment(id, postData));
 export const updatePost = createPromiseThunkById(UPDATE_POST, postsAPI.updatePostById);
 export const deletePost = createPromiseThunkById(DELETE_POST, postsAPI.deletePostById);
 
@@ -69,6 +71,10 @@ export default function posts(state = initialState, action) {
     case CREATE_POST_SUCCESS:
     case CREATE_POST_ERROR:
         return handleAsyncActions(CREATE_POST, 'posts', true)(state, action);
+    case CREATE_POST_COMMENT:
+    case CREATE_POST_COMMENT_SUCCESS:
+    case CREATE_POST_COMMENT_ERROR:
+        return handleAsyncActionsById(CREATE_POST_COMMENT, 'post', true)(state, action);
     case UPDATE_POST:
     case UPDATE_POST_SUCCESS:
     case UPDATE_POST_ERROR:

@@ -104,13 +104,41 @@ export const createPromiseThunkById = (
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
 
   return param => async dispatch => {
+  
     const id = idSelector(param);
+
+    console.log("param    " + param);
     dispatch({ type, meta: id });
     try {
       const payload = await promiseCreator(param);
 
       dispatch({ type: SUCCESS, payload, meta: id });
 
+    } catch (e) {
+      dispatch({ type: ERROR, error: true, payload: e, meta: id });
+    }
+  };
+};
+
+
+
+export const createPromiseThunkByPostId = (
+  type,
+  promiseCreator,
+
+  idSelector = defaultIdSelector
+) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+
+  return (postId, postData) => async dispatch => {
+    const id = idSelector(postId);
+
+    dispatch({ type, meta: id });
+    try {
+      const payload = await promiseCreator(postId, postData);
+  
+      dispatch({ type: SUCCESS, payload, meta: id });
+  
     } catch (e) {
       dispatch({ type: ERROR, error: true, payload: e, meta: id });
     }
